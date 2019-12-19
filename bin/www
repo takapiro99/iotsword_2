@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('iotsword2:server');
 var http = require('http');
 
+
 /**
  * Get port from environment and store in Express.
  */
@@ -18,9 +19,9 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
 
+module.exports = server;
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -52,7 +53,6 @@ function normalizePort(val) {
 /**
  * Event listener for HTTP server "error" event.
  */
-
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
