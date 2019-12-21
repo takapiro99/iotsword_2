@@ -6,7 +6,7 @@ const server = require('../bin/www');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('control', { title: 'Express' });
+  res.render('u_drawing', { title: 'Express' });
 });
 
 
