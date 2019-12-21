@@ -21,7 +21,7 @@ app.set('port', port);
  */
 var server = http.createServer(app);
 
-module.exports = server;
+//module.exports = server;
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -88,3 +88,20 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+var io = require('socket.io')(server);
+/**
+ * ADDED!! Socket.IO Connection.
+ */
+io.on("connection",function(socket){
+  console.log("made socket connection",socket.id);
+
+  socket.on("chat",function(data){
+      io.sockets.emit("chat",data);
+      console.log(data);
+  });
+
+  //socket.on("typing",function(data){
+  //    socket.broadcast.emit("typing",data)
+  //})
+}); 
