@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+        <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+    <link rel="stylesheet" href="stylesheets/canvas.css">
+
+
+
+<script>
+const lednum = 10;
+
+const delayTime = 500;
+const height = 30;
+let a = window.outerWidth
+const width = a - 30;
+//console.log(width);
+const eachwidth = width/lednum;
+const scaleBy = 3
+
+
+
+</script>
+
+
+
+</head>
+
+
+<body id="body">
+
+<!--
+<div class="tree">
+                <label class="control-label">mode</label>
+                <btn type="button" id="pen-mode" class="btn page-link text-dark d-inline-block"><i class="fas fa-pencil-alt"></i></btn>
+                <btn type="button" id="erase-mode" class="btn page-link text-dark d-inline-block"><i class="fas fa-eraser"></i></btn>
+                <btn type="button" value="塗りつぶし" class="btn page-link text-dark d-inline-block" onclick="yamada()"><i class="fas fa-fill-drip"></i></btn>
+                <br><br>
+
+                <input type="button" id="undo" value="1つ前の状態に戻す" class="btn page-link text-dark d-inline-block">
+                <div class="sousin">
+                <input type="button" id="clear" value="すべて消す" class="btn btn-outline-danger">
+                
+                </div>
+</div>
+-->
+<div id="all">
+<div class="space1"><span class="space">Real Time Controller</span></div>
+
+<div class="canvas123">  
+    <canvas class="mycanvas" id="mycanvas">残念ながらHTML5に対応していません</canvas>
+</div>
+
+<div class="container">
+    <div class="material-color-picker">
+        <ol class="color-selector" data-bind="foreach: materialColors">
+            <li class="color" >
+                <input name="material-color" type="radio" data-bind="attr: { id: 'materialColor' + $index() }, checked: selectedColor, value: color" >
+                <label class="lab" onclick='getColor(this);' data-bind="attr: { for: 'materialColor' + $index(), title: color,'id':color}, style: { 'color': $data.hex } "></label>
+            </li>
+        </ol>
+    </div>
+</div>
+<div id="colour">#&lt;color&gt;</div>
+
+<div class="testbutton"><button class="woo" onclick=colorinfos()>woo</button></div>
+</div>
+    
+<script src="javascripts/canvas.js"></script>
+
+
+
+</body>
+    
+</html>
