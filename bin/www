@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+const lednum = 10
 /**
  * Module dependencies.
  */
@@ -91,10 +91,14 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
+
 var io = require('socket.io')(server);
+//module.exports = io;
 /**
  * ADDED!! Socket.IO Connection.
  */
+
+
 io.on("connection",function(socket){
   console.log("made socket connection",socket.id);
 
@@ -103,6 +107,12 @@ io.on("connection",function(socket){
       console.log(data);
   });
 
+  for(let i=0;i<lednum;i++){
+    socket.on(String(i),function(color){
+      socket.broadcast.emit(String(i),color);
+      console.log(i, color);
+    })
+  }
   //socket.on("typing",function(data){
   //    socket.broadcast.emit("typing",data)
   //})

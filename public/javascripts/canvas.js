@@ -1,40 +1,40 @@
     
 const mycanvas = document.getElementById('mycanvas');
 const c = mycanvas.getContext("2d");
+const socket = io.connect("http://localhost:3000");
 
-/*
-let sendFlag = Array(lednum);
-sendFlag.fill(true);
-console.log(sendFlag);
-*/
-
+//special thanks to https://gist.github.com/gerbenvandijk/7543149
 function rgbToHex(r, g, b) {
     if (r > 255 || g > 255 || b > 255)
     throw "Invalid color component";
     return ((r << 16) | (g << 8) | b).toString(16);
 }
 
+for(let i=0;i<lednum;i++){
+socket.on(String(i),function(color){
+    //もし違う色なら塗る
+    fill[i](color,false);
+})
+}
+
+function emit(num,color){
+    socket.emit(String(num),color);
+    console.log("sent",num,color);
+}
 
 // fill[<where>](color);
 const fill = []
 for (let i=0; i< lednum; i++){
-  fill[i]=function(color){
+  fill[i]=function(color,local){
     let xx = eachwidth/2;
     let data = c.getImageData(eachwidth*i*scaleBy+xx, height/2, 1, 1).data; 
     hex = "#" + ("000000" + rgbToHex(data[0], data[1], data[2])).slice(-6); //current hex color on canvas
     //console.log(hex, color)
-    if(hex!=color){
-        console.log("send "+i);
-    }
+    if(hex!=color && local==true){emit(i,color);}
+
     c.fillStyle=color;
     c.fillRect(i*eachwidth+0.4,0.5,eachwidth-1,height-1.5);
     c.fill();
-    /*
-    if (sendFlag[i]==true){
-        console.log("send "+i); //I want to actually emit
-        sendFlag[i]=false;
-        setTimeout(()=>{sendFlag[i]=true;console.log("woo");},delayTime);
-    }*/
   }
 }
 
@@ -123,7 +123,7 @@ b.addEventListener("touchstart",function(){
 
 b.addEventListener("touchend",function(){
     let endTime = performance.now();
-    console.log(endTime - startTime);
+    console.log(endTime - startTime); 
 })
 */
 
@@ -143,7 +143,7 @@ mycanvas.addEventListener("mousemove", function (e) {
 		if (quantize(mouseX, mouseY) === undefined) {
 			//console.log("out of tree!!!!") //for test
 		} else {
-            fill[quantize(mouseX, mouseY)](currentColor);
+            fill[quantize(mouseX, mouseY)](currentColor,true);
             //console.log("filled "+String(quantize(mouseX, mouseY)));
 		}
 	}
@@ -158,10 +158,11 @@ mycanvas.addEventListener("mousedown", function (e) {
 	if (quantize(mouseX, mouseY) === undefined) {
         //console.log("out of tree!!!!") //for test
 	} else {
-        fill[quantize(mouseX, mouseY)](currentColor);
+        fill[quantize(mouseX, mouseY)](currentColor,true);
         //console.log("filled "+String(quantize(mouseX, mouseY)));
 	}
 });
+
 
 mycanvas.addEventListener("mouseup", function (e) {
 	draw = false;
@@ -188,7 +189,7 @@ mycanvas.addEventListener("touchstart", function (e) {
 	if (quantize(finger1.x1, finger1.y1) === undefined) {
 		//console.log("out of tree!!!!") //for test
 	} else {
-        fill[quantize(finger1.x1, finger1.y1)](currentColor);
+        fill[quantize(finger1.x1, finger1.y1)](currentColor,true);
         //delay(25);
         //console.log("filled "+quantize(finger1.x1, finger1.y1));
 	}
@@ -204,7 +205,7 @@ mycanvas.addEventListener("touchmove", function (e) {
 	if (quantize(finger1.x, finger1.y) === undefined) {
 		//console.log("out of tree! (touched)")
 	} else {
-        fill[quantize(finger1.x, finger1.y)](currentColor);
+        fill[quantize(finger1.x, finger1.y)](currentColor,true);
 	}
 });
 
@@ -245,25 +246,31 @@ ko.applyBindings({
     ]
 });
 
+
+
 function rgb2hex(color){
-  let hex = '#';
-  if (color.match(/^#[a-f\d]{3}$|^#[a-f\d]{6}$/i)){return color;}
-  var regex = color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-  if (regex){
-    var rgb = [
-      parseInt(regex[1]).toString(16),
-      parseInt(regex[2]).toString(16),
-      parseInt(regex[3]).toString(16)
-    ];
-    for (var i = 0; i < rgb.length; ++i){
-      if (rgb[i].length == 1){rgb[i] = '0' + rgb[i];}
-      hex += rgb[i];
+    let hex = '#';
+    if (color.match(/^#[a-f\d]{3}$|^#[a-f\d]{6}$/i)){return color;}
+    var regex = color.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    if (regex){
+      var rgb = [
+        parseInt(regex[1]).toString(16),
+        parseInt(regex[2]).toString(16),
+        parseInt(regex[3]).toString(16)
+      ];
+      for (var i = 0; i < rgb.length; ++i){
+        if (rgb[i].length == 1){rgb[i] = '0' + rgb[i];}
+        hex += rgb[i];
+      }
+      return hex;
     }
-    return hex;
+    console.error('第1引数はRGB形式で入力');
   }
-  console.error('第1引数はRGB形式で入力');
-}
+
+
+
 let currentColor = "#f06292";
+
 function getColor(el){
     let color = el.style.color;
     let text = document.getElementById("colour");
@@ -272,23 +279,7 @@ function getColor(el){
     //console.log(rgb2hex(color));
 }
 
-
-/*
-//script for getting infos of the tree and send
-function rgb2hex(rgb) {
-	return "#" + rgb.map(function (value) {
-		return ("0" + value.toString(16)).slice(-2);
-	}).join("").slice(0, -2);
-}
-*/
-
-/*
-function getHex(){
-    data = canvas.getContext('2d').getImageData(1, 1, 1, 1).data; // we get color data from a canvas element here
-    hex = "#" + ("000000" + rgbToHex(data[0], data[1], data[2])).slice(-6); // we convert it to a hex value using the above function
-}
-*/
-//reads color each 6px from upperleft  
+  
 function colorinfos() {
   colorInfo = [];
   colorSlug = ""
