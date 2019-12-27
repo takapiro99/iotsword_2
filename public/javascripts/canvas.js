@@ -11,17 +11,29 @@ function rgbToHex(r, g, b) {
 }
 
 for(let i=0;i<lednum;i++){
-socket.on(String(i),function(color){
+    socket.on(String(i),function(color){
     //もし違う色なら塗る
-    fill[i](color,false);
-})
+    fill(i,color,false);
+  });
 }
 
 function emit(num,color){
-    socket.emit(String(num),color);
-    console.log("sent",num,color);
+  socket.emit(String(num),color);
+  console.log("sent",num,color);
 }
 
+
+function fill(i,color,local){
+  let xx = eachwidth/2;
+  let data = c.getImageData(eachwidth*i*scaleBy+xx, height/2, 1, 1).data; 
+  hex = "#" + ("000000" + rgbToHex(data[0], data[1], data[2])).slice(-6); 
+  if(hex!=color && local==true){emit(i,color);}
+  c.fillStyle=color;
+  c.fillRect(i*eachwidth+0.4,0.5,eachwidth-1,height-1.5);
+  c.fill();
+}
+
+/*
 // fill[<where>](color);
 const fill = []
 for (let i=0; i< lednum; i++){
@@ -37,8 +49,7 @@ for (let i=0; i< lednum; i++){
     c.fill();
   }
 }
-
-
+*/
 function init() {
   
   mycanvas.width = width * scaleBy;
@@ -87,7 +98,7 @@ init();
 
 function reset(){
   for(let i=0;i<lednum;i++){
-    fill[i]("#333");
+    fill(i,"#333333",true);
   }
 }
 
@@ -143,7 +154,7 @@ mycanvas.addEventListener("mousemove", function (e) {
 		if (quantize(mouseX, mouseY) === undefined) {
 			//console.log("out of tree!!!!") //for test
 		} else {
-            fill[quantize(mouseX, mouseY)](currentColor,true);
+            fill(quantize(mouseX, mouseY),currentColor,true);
             //console.log("filled "+String(quantize(mouseX, mouseY)));
 		}
 	}
@@ -158,7 +169,7 @@ mycanvas.addEventListener("mousedown", function (e) {
 	if (quantize(mouseX, mouseY) === undefined) {
         //console.log("out of tree!!!!") //for test
 	} else {
-        fill[quantize(mouseX, mouseY)](currentColor,true);
+        fill(quantize(mouseX, mouseY),currentColor,true);
         //console.log("filled "+String(quantize(mouseX, mouseY)));
 	}
 });
@@ -189,7 +200,7 @@ mycanvas.addEventListener("touchstart", function (e) {
 	if (quantize(finger1.x1, finger1.y1) === undefined) {
 		//console.log("out of tree!!!!") //for test
 	} else {
-        fill[quantize(finger1.x1, finger1.y1)](currentColor,true);
+        fill(quantize(finger1.x1, finger1.y1),currentColor,true);
         //delay(25);
         //console.log("filled "+quantize(finger1.x1, finger1.y1));
 	}
@@ -205,7 +216,7 @@ mycanvas.addEventListener("touchmove", function (e) {
 	if (quantize(finger1.x, finger1.y) === undefined) {
 		//console.log("out of tree! (touched)")
 	} else {
-        fill[quantize(finger1.x, finger1.y)](currentColor,true);
+        fill(quantize(finger1.x, finger1.y),currentColor,true);
 	}
 });
 

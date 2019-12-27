@@ -98,22 +98,74 @@ var io = require('socket.io')(server);
  * ADDED!! Socket.IO Connection.
  */
 
+function hex2rgb ( hex ) {
+	if ( hex.slice(0, 1) == "#" ) hex = hex.slice(1) ;
+	if ( hex.length == 3 ) hex = hex.slice(0,1) + hex.slice(0,1) + hex.slice(1,2) + hex.slice(1,2) + hex.slice(2,3) + hex.slice(2,3) ;
+	return [ hex.slice( 0, 2 ), hex.slice( 2, 4 ), hex.slice( 4, 6 ) ].map( function ( str ) {
+		return parseInt( str, 16 ) ;
+	} ) ;
+}
 
-io.on("connection",function(socket){
+function reduce(r,g,b){// && set!=null
+  if(r==0 && g==0 && b==0){return false;}//黒になったらclearintervalする。
+  // actual dimming function down here
+  if(r<30){r=0}else{r-=30}
+  if(g<30){g=0}else{g-=30}
+  if(b<30){b=0}else{b-=30}
+  console.log([r,g,b]);
+  return [r,g,b];
+};
+//dim[0]("#ee0012");
+//ってやったら自動で0番のdimが始まる。他のやつが来たり0になったらbreakしなければならない。
+let dim = []
+//dim[i](color)
+for(let i=0;i<lednum;i++){
+  
+  dim[i] = function dim(color){
+    let rgb = hex2rgb(color);
+    //let apple =  "dim"+String(i);
+    //console.log(apple);
+    let r = rgb[0] - 0;
+    let g = rgb[1] - 0;
+    let b = rgb[2] - 0;
+    console.log(r,g,b);
+    i = setInterval((r,g,b)=>{
+      if(reduce(r,g,b)==false){clearInterval(i)}
+      //return reduce(r,g,b)[0],reduce(r,g,b)[1],reduce(r,g,b)[2];
+    },300);
+  }
+}
+
+
+// when socket.io starts, below
+io.on("connection",(socket)=>{
   console.log("made socket connection",socket.id);
-
-  socket.on("chat",function(data){
+  // on "chat", emits data and console log it.
+  socket.on("chat",(data)=>{
       io.sockets.emit("chat",data);
       console.log(data);
   });
-
+  // for each cells listens to "<int>" and braodcast the data.
   for(let i=0;i<lednum;i++){
-    socket.on(String(i),function(color){
-      socket.broadcast.emit(String(i),color);
-      console.log(i, color);
+    socket.on(String(i),(color)=>{ // 情報が来たら
+      //　もし dim しているやつがいれば止める  if(dim){stop;}
+      // dim していく  dim(); (各dimでemitし続ける)
+      socket.broadcast.emit(String(i),color); //broadcast to everyone
+      console.log(i, color); 
     })
   }
   //socket.on("typing",function(data){
   //    socket.broadcast.emit("typing",data)
   //})
 }); 
+
+
+
+//setInterval(()=>{io.sockets.emit("2","#ff00ff");},3000)
+
+//setInterval(jam, 3000);
+ 
+  function jam(){
+  let random = String(Math.floor( Math.random () * 10));
+  io.sockets.emit(random,"#000000");
+ }
