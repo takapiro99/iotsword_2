@@ -106,36 +106,73 @@ function hex2rgb ( hex ) {
 	} ) ;
 }
 
-function reduce(r,g,b){// && set!=null
-  if(r==0 && g==0 && b==0){return false;}//黒になったらclearintervalする。
-  // actual dimming function down here
-  if(r<30){r=0}else{r-=30}
-  if(g<30){g=0}else{g-=30}
-  if(b<30){b=0}else{b-=30}
-  console.log([r,g,b]);
-  return [r,g,b];
-};
-//dim[0]("#ee0012");
-//ってやったら自動で0番のdimが始まる。他のやつが来たり0になったらbreakしなければならない。
-let dim = []
-//dim[i](color)
-for(let i=0;i<lednum;i++){
-  
-  dim[i] = function dim(color){
-    let rgb = hex2rgb(color);
-    //let apple =  "dim"+String(i);
-    //console.log(apple);
-    let r = rgb[0] - 0;
-    let g = rgb[1] - 0;
-    let b = rgb[2] - 0;
-    console.log(r,g,b);
-    i = setInterval((r,g,b)=>{
-      if(reduce(r,g,b)==false){clearInterval(i)}
-      //return reduce(r,g,b)[0],reduce(r,g,b)[1],reduce(r,g,b)[2];
-    },300);
-  }
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
 }
 
+function rgb2hex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
+/*
+function rgb2hex ( rgb ) {
+	return "#" + rgb.map( function ( value ) {
+		return ( "0" + value.toString( 16 ) ).slice( -2 ) ;
+	} ).join( "" ) ;
+}
+//rgb2hex( [ 255, 128, 64 ] ) ;	// #ff8040
+*/
+//dim[0]("#ee0012");
+//ってやったら自動で0番のdimが始まる。他のやつが来たり0になったらbreakしなければならない。
+function chain(rgb){
+  console.log("hello " + rgb)
+  const p = new Promise((resolve, reject) => {
+    //emitting(rgb[3],rgb2hex(rgb[0],rgb[1],rgb[2]));
+    setTimeout(function(){
+      emitting(rgb[3],rgb2hex(rgb[0],rgb[1],rgb[2]));
+      if(info[rgb[3]]==true){info[rgb[3]]=false;active[rgb[3]]=false;console.log("one");reject();}
+      if(rgb[0]==0&&rgb[1]==0&&rgb[2]==0){console.log("two");reject();}
+      if(rgb[0]<30){rgb[0]=0}else{rgb[0]-=30}
+      if(rgb[1]<30){rgb[1]=0}else{rgb[1]-=30}
+      if(rgb[2]<30){rgb[2]=0}else{rgb[2]-=30}
+      resolve(rgb)
+    },rgb[4],rgb);
+  });
+  return p
+}
+
+function emitting(i,color){
+  io.sockets.emit(i,color);
+}
+
+function dim(i,color,delay){
+  let rgb = [];
+  let piece = hex2rgb(color);
+  rgb[0] = piece[0];
+  rgb[1] = piece[1];
+  rgb[2] = piece[2];
+  rgb[3] = i;
+  rgb[4] = delay
+  emitting(rgb[3],rgb2hex(rgb[0],rgb[1],rgb[2]));
+  //active[i]=true;
+  setTimeout(function(){info[i]=false;},700)
+  chain(rgb)
+      .then((rgb)=>chain(rgb))
+      .then((rgb)=>chain(rgb))
+      .then((rgb)=>chain(rgb))
+      .then((rgb)=>chain(rgb))
+      .then((rgb)=>chain(rgb))
+      .then((rgb)=>chain(rgb))
+      .then((rgb)=>chain(rgb))
+      .then((rgb)=>chain(rgb)).catch(()=>{console.log("stopped")});
+}
+
+let info = []
+let active = []
+for(let i=0;i<10;i++){info[i]=false;active[i]=false;}
+
+  
 
 // when socket.io starts, below
 io.on("connection",(socket)=>{
@@ -148,10 +185,19 @@ io.on("connection",(socket)=>{
   // for each cells listens to "<int>" and braodcast the data.
   for(let i=0;i<lednum;i++){
     socket.on(String(i),(color)=>{ // 情報が来たら
+      console.log(i, color); 
+      if(active[i]==true){
+        console.log("three");info[i]=true;dim(i,color,500);
+      }else{
+        active[i]=true;
+        dim(i,color,500);
+      }
+      //dim(i,color,100);//info[i]=true;
+      
       //　もし dim しているやつがいれば止める  if(dim){stop;}
       // dim していく  dim(); (各dimでemitし続ける)
-      socket.broadcast.emit(String(i),color); //broadcast to everyone
-      console.log(i, color); 
+      //socket.broadcast.emit(String(i),color); //broadcast to everyone
+      
     })
   }
   //socket.on("typing",function(data){

@@ -13,6 +13,7 @@ function rgbToHex(r, g, b) {
 for(let i=0;i<lednum;i++){
     socket.on(String(i),function(color){
     //もし違う色なら塗る
+    console.log("recieved",i,color)
     fill(i,color,false);
   });
 }
@@ -98,7 +99,7 @@ init();
 
 function reset(){
   for(let i=0;i<lednum;i++){
-    fill(i,"#333333",true);
+    fill(i,"#000000",true);
   }
 }
 
