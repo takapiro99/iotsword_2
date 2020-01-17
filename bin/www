@@ -8,7 +8,8 @@ var app = require('../app');
 var debug = require('debug')('iotsword2:server');
 var http = require('http');
 
-
+var mqtt = require('mqtt');
+var client  = mqtt.connect('mqtt://153.126.160.230');
 
 
 /** 
@@ -173,7 +174,10 @@ let active = []
 for(let i=0;i<10;i++){info[i]=false;active[i]=false;}
 
   
-
+/*-----------------------------
+            main 
+ 
+ -----------------------------*/
 // when socket.io starts, below
 io.on("connection",(socket)=>{
   console.log("made socket connection",socket.id);
@@ -215,3 +219,19 @@ io.on("connection",(socket)=>{
   let random = String(Math.floor( Math.random () * 10));
   io.sockets.emit(random,"#000000");
  }
+
+
+
+ client.on('connect', function () {
+  client.subscribe('presence', function (err) {
+    if (!err) {
+      client.publish('presence', 'Hello mqtt')
+    }
+  })
+})
+
+client.on('message', function (topic, message) {
+  // message is Buffer
+  console.log(message.toString())
+  client.end()
+})
