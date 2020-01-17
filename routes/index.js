@@ -15,4 +15,21 @@ router.get('/me', function(req, res, next) {
   res.render('me', { title: 'this is my page' });
 });
 
+router.get('/json', function(req, res, next) {
+  //console.log(info)
+  console.log("json");
+  res.json({
+    0:info[0],
+    1:info[1],
+    2:info[2],
+    3:info[3],
+    4:info[4],
+    5:info[5],
+    6:info[6],
+    7:info[7],
+    8:info[8],
+    9:info[9]      
+  });
+});
+
 module.exports = router;

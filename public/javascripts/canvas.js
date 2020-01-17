@@ -18,6 +18,9 @@ for(let i=0;i<lednum;i++){
   });
 }
 
+
+
+
 function emit(num,color){
   socket.emit(String(num),color);
   console.log("sent",num,color);
@@ -98,10 +101,28 @@ init();
 
 
 function reset(){
-  for(let i=0;i<lednum;i++){
-    fill(i,"#000000",true);
-  }
+  //console.log("reset 発動！")
+  //現在の色を取得して反映させる
+  $(function(){
+    // Ajax button click
+    $.ajax({
+        url:'/json',
+        type:'GET',
+    })
+    // Ajaxリクエストが成功した時発動
+    .done( (data) => {
+      for(let i=0;i<lednum;i++){
+        fill(i,data[i],false);
+      }
+      console.log("done");
+    })
+    // Ajaxリクエストが失敗した時発動
+    .fail( (data) => {
+        console.log("failed");
+    })
+});
 }
+
 
 function quantize(xx,yy){
   let left = 0
@@ -122,26 +143,6 @@ x1: 0,
 y1: 0
 };
 var draw = false;
-
-/*
-let startTime = "";
-let b = document.getElementById("all");
-b.addEventListener("touchstart",function(){
-    startTime = performance.now();
-    console.log("down");
-
-    
-})
-
-b.addEventListener("touchend",function(){
-    let endTime = performance.now();
-    console.log(endTime - startTime); 
-})
-*/
-
-
-
-
 
 mycanvas.addEventListener("mousemove", function (e) {
   var rect = e.target.getBoundingClientRect();
