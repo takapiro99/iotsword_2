@@ -9,48 +9,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script>
-const lednum = 10;
-
-const delayTime = 500;
-const height = 30;
-let a = window.outerWidth
-const width = a - 30;
-//console.log(width);
-const eachwidth = width/lednum;
-const scaleBy = 3
-
-</script>
+    <script>
+    const lednum = 28;
+    const delayTime = 500;
+    const height = 30;
+    let a = window.outerWidth
+    const width = a - 30;
+    //console.log(width);
+    const eachwidth = width/lednum;
+    const scaleBy = 3
+    </script>
 </head>
 
 
-<body id="body">
-
-<div id="all">
-<div class="space1"><span class="space" style="margin:10em auto">Hello World</span></div>
-
-<div class="canvas123">  
-    <canvas class="mycanvas" id="mycanvas">残念ながらHTML5に対応していません</canvas>
-</div>
-
-<div class="container">
-    <div class="material-color-picker">
-        <ol class="color-selector" data-bind="foreach: materialColors">
-            <li class="color" >
-                <input name="material-color" type="radio" data-bind="attr: { id: 'materialColor' + $index() }, checked: selectedColor, value: color" >
-                <label class="lab" onclick='getColor(this);' data-bind="attr: { for: 'materialColor' + $index(), title: color,'id':color}, style: { 'color': $data.hex } "></label>
-            </li>
-        </ol>
+<body>
+    <div class="space1"><span class="space" style="margin:10em auto">Hello World</span></div>
+    <div class="canvas123"><canvas class="mycanvas" id="mycanvas">残念ながらHTML5に対応していません</canvas></div>
+    <div class="container">
+        <div class="material-color-picker">
+            <ol class="color-selector" data-bind="foreach: materialColors">
+                <li class="color" >
+                    <input name="material-color" type="radio" data-bind="attr: { id: 'materialColor' + $index() }, checked: selectedColor, value: color" >
+                    <label class="lab" onclick='getColor(this);' data-bind="attr: { for: 'materialColor' + $index(), title: color,'id':color}, style: { 'color': $data.hex } "></label>
+                </li>
+            </ol>
+        </div>
     </div>
-</div>
-<div id="colour" style="font-size: 1.5rem;margin:1.2em auto">#&lt;color&gt;</div>
-
-<div class="testbutton"><button class="btn-small blue" style="width:10em" onclick=colorinfos()>console.log</button></div>
-</div>
+    <div id="colour" style="font-size: 1.5rem;margin:1.2em auto">#&lt;color&gt;</div>
+    <div class="testbutton"><button class="btn-small blue" style="width:10em" onclick=colorinfos()>console.log</button></div>
     
-
-
-<script src="javascripts/canvas.js"></script>
+    <script src="javascripts/canvas.js"></script>
 </body>
-
 </html>
