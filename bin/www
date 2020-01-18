@@ -164,22 +164,22 @@ io.on("connection",(socket)=>{
       console.log(i, color); 
       info[i]=color;
       dim(i,color,500);
-      client.publish("color/"+String(i),color);
-      //socket.broadcast.emit(String(i),color); //broadcast to everyone
+      let one = String(hex2rgb(color)[0])
+      let two = String(hex2rgb(color)[1])
+      let ree = String(hex2rgb(color)[2])
+      if(one.length==1){one='00'+one;}if(one.length==2){one='0'+one;}
+      if(two.length==1){two='00'+two;}if(two.length==2){two='0'+two;}
+      if(ree.length==1){ree='00'+ree;}if(ree.length==2){ree='0'+ree;}
+      let clr = one+two+ree
+      let num;
+      if(String(i).length==1){num = "0"+String(i)}else{num=String(i)}
+      client.publish("color/"+num,clr);console.log(num,clr);
     })
   }
   //socket.on("typing",function(data){
   //    socket.broadcast.emit("typing",data)
   //})
 }); 
- 
-  function jam(){
-  let random = String(Math.floor( Math.random () * 10));
-  io.sockets.emit(random,"#000000");
- }
-
-//setInterval(()=>{client.publish('presence', 'Hello mqtt')},2000);
-
 
 client.on('connect', function () {
   client.subscribe('presence',(err)=>{if (!err) {client.publish('presence', 'Hello mqtt')}});
@@ -193,22 +193,9 @@ client.on('connect', function () {
 }());
 
 
-
 client.on('message', function (topic, message) {
-  //console.log(topic)
-  // message is Buffer
   //client.subscribe(topic,()=>{console.log("this func")})
   msg = message.toString();
   console.log(msg);
   //client.end();
 })
-
-
-/*
-client.subscribe('message', function (err) {
-  if (!err) {
-    console.log()
-    //client.publish('presence', 'Hello mqtt')
-  }
-})
-*/

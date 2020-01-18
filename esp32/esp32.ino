@@ -71,22 +71,56 @@ void setup_wifi() {
 }
 
 
+
+void Palette1(){
+  CRGB blue  = CHSV( HUE_BLUE, 255, 255);
+  CRGB black  = CRGB::Black;
+  currentPalette = CRGBPalette16(
+                                 black, black, black, 0xff00ff,
+                                 blue,  black, black, black,
+                                 black, black, black, black,
+                                 black, black, black, black );
+}
+void ledsetup() {
+    delay( 2000 ); // power-up safety delay
+    FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+    FastLED.setBrightness( BRIGHTNESS );
+    Palette1();
+    currentBlending = LINEARBLEND;
+}
+
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
-  for (int i = 0; i < length; i++) {
+  //Serial.print(topic);
+  //int i = topic - '0';
+  //Serial.print("%d", topic - '0'); // 1
+
+  if((char)topic[0]=='c'){
+    Serial.print(topic[6]);
+    Serial.print(topic[7]);
+
+    //int *six;
+    //int six = *topic[6];
+    //Serial.println(six);
+    //new char six;
+    //char six = topic[6];
+    //new char sev;
+    //char sev = topic[7];
+    //int sixm = (topic[6]).toInt();
+    //if(six=="0"){Serial.print(six.toInt());}
+    //Serial.print(sixm);
+    Serial.print(": ");
+    for(int i=0;i<9;i++){
     Serial.print((char)payload[i]);
+    }
+    Serial.println();
   }
+
+// color/02 000222444 
+  
+  Serial.print("] ");
   Serial.println();
-  // Switch on the LED if an 1 was received as first character
-  if ((char)payload[0] == '1') {
-    digitalWrite(BUILTIN_LED, LOW);   // Turn the LED on (Note that LOW is the voltage level
-    // but actually the LED is on; this is because
-    // it is active low on the ESP-01)
-  } else {
-    digitalWrite(BUILTIN_LED, HIGH);  // Turn the LED off by making the voltage HIGH
-  }
+  
 }
 
 void reconnect() {
@@ -103,6 +137,7 @@ void reconnect() {
       client.publish("outTopic", "hello world");
       // ... and resubscribe
       client.subscribe("inTopic");
+      client.subscribe("color/+");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -113,21 +148,36 @@ void reconnect() {
   }
 }
 
+
+
 void setup() {
   pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
   Serial.begin(115200);
   setup_wifi();
   client.setServer(mqtt_server, 1883);
   client.setCallback(callback);
+  ledsetup();
 }
-
+void FillLEDsFromPaletteColors(uint8_t colorIndex)
+{
+    uint8_t brightness = 255;
+    for( int i = 28; i>=0; i--) {
+        leds[i] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
+        colorIndex += 3;
+    }
+}
 
 void loop() {
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
-
+  static uint8_t startIndex = 0;
+  startIndex = startIndex + 1; /* motion speed */
+  FillLEDsFromPaletteColors(startIndex);
+  FastLED.show();
+  FastLED.delay(1000 / UPDATES_PER_SECOND);
+  
   long now = millis();
   if (now - lastMsg > 2000) {
     lastMsg = now;
