@@ -103,7 +103,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     //leds[3].r = 105;
     //leds[3].g = 23;
     //int wow = (int)topic[6]+2
-    Serial.print((int)topic[6]+2);
+    Serial.print((int)topic[6]);
     Serial.print(": ");
     for(int i=0;i<9;i++){
     Serial.print((char)payload[i]);
