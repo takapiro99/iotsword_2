@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const lednum = 10
+const lednum = 28
 /**
  * Module dependencies.
  */
@@ -126,25 +126,10 @@ function rgb2hex ( rgb ) {
 */
 //dim[0]("#ee0012");
 //ってやったら自動で0番のdimが始まる。他のやつが来たり0になったらbreakしなければならない。
-function chain(rgb){
-  console.log("hello " + rgb)
-  const p = new Promise((resolve, reject) => {
-    //emitting(rgb[3],rgb2hex(rgb[0],rgb[1],rgb[2]));
-    setTimeout(function(){
-      emitting(rgb[3],rgb2hex(rgb[0],rgb[1],rgb[2]));
-      if(info[rgb[3]]==true){info[rgb[3]]=false;active[rgb[3]]=false;console.log("one");reject();}
-      if(rgb[0]==0&&rgb[1]==0&&rgb[2]==0){console.log("two");reject();}
-      if(rgb[0]<30){rgb[0]=0}else{rgb[0]-=30}
-      if(rgb[1]<30){rgb[1]=0}else{rgb[1]-=30}
-      if(rgb[2]<30){rgb[2]=0}else{rgb[2]-=30}
-      resolve(rgb)
-    },rgb[4],rgb);
-  });
-  return p
-}
 
 function emitting(i,color){
   io.sockets.emit(i,color);
+  //socket.broadcast.emit(i,color);
 }
 
 function dim(i,color,delay){
@@ -154,26 +139,13 @@ function dim(i,color,delay){
   rgb[1] = piece[1];
   rgb[2] = piece[2];
   rgb[3] = i;
-  rgb[4] = delay
   emitting(rgb[3],rgb2hex(rgb[0],rgb[1],rgb[2]));
-  //active[i]=true;
-  setTimeout(function(){info[i]=false;},700)
-  chain(rgb)
-      .then((rgb)=>chain(rgb))
-      .then((rgb)=>chain(rgb))
-      .then((rgb)=>chain(rgb))
-      .then((rgb)=>chain(rgb))
-      .then((rgb)=>chain(rgb))
-      .then((rgb)=>chain(rgb))
-      .then((rgb)=>chain(rgb))
-      .then((rgb)=>chain(rgb)).catch(()=>{console.log("stopped")});
 }
 
-let info = []
-let active = []
-for(let i=0;i<10;i++){info[i]=false;active[i]=false;}
-
-  
+info = []
+for(let i=0;i<lednum;i++){
+  info[i]="#000000";
+}
 /*-----------------------------
             main 
  
@@ -190,18 +162,18 @@ io.on("connection",(socket)=>{
   for(let i=0;i<lednum;i++){
     socket.on(String(i),(color)=>{ // 情報が来たら
       console.log(i, color); 
-      if(active[i]==true){
-        console.log("three");info[i]=true;dim(i,color,500);
-      }else{
-        active[i]=true;
-        dim(i,color,500);
-      }
-      //dim(i,color,100);//info[i]=true;
-      
-      //　もし dim しているやつがいれば止める  if(dim){stop;}
-      // dim していく  dim(); (各dimでemitし続ける)
-      //socket.broadcast.emit(String(i),color); //broadcast to everyone
-      
+      info[i]=color;
+      dim(i,color,500);
+      let one = String(hex2rgb(color)[0])
+      let two = String(hex2rgb(color)[1])
+      let ree = String(hex2rgb(color)[2])
+      if(one.length==1){one='00'+one;}if(one.length==2){one='0'+one;}
+      if(two.length==1){two='00'+two;}if(two.length==2){two='0'+two;}
+      if(ree.length==1){ree='00'+ree;}if(ree.length==2){ree='0'+ree;}
+      let clr = one+two+ree
+      let num;
+      if(String(i).length==1){num = "0"+String(i)}else{num=String(i)}
+      client.publish("color/"+num,clr);console.log(num,clr);
     })
   }
   //socket.on("typing",function(data){
@@ -209,29 +181,21 @@ io.on("connection",(socket)=>{
   //})
 }); 
 
+client.on('connect', function () {
+  client.subscribe('presence',(err)=>{if (!err) {client.publish('presence', 'Hello mqtt')}});
+  client.subscribe("message",(err)=>{if(!err){console.log("message");}else{console.log("err");}});
+  client.subscribe("color/#",(err)=>{if(!err){console.log("color");}else{console.log("err");}});
+});
 
+(function(){
+  console.log("func");
+  client.publish("message","publishing!!!!!!");
+}());
 
-//setInterval(()=>{io.sockets.emit("2","#ff00ff");},3000)
-
-//setInterval(jam, 3000);
- 
-  function jam(){
-  let random = String(Math.floor( Math.random () * 10));
-  io.sockets.emit(random,"#000000");
- }
-
-
-
- client.on('connect', function () {
-  client.subscribe('presence', function (err) {
-    if (!err) {
-      client.publish('presence', 'Hello mqtt')
-    }
-  })
-})
 
 client.on('message', function (topic, message) {
-  // message is Buffer
-  console.log(message.toString())
-  client.end()
+  //client.subscribe(topic,()=>{console.log("this func")})
+  msg = message.toString();
+  console.log(msg);
+  //client.end();
 })

@@ -5,63 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="stylesheets/canvas.css">
-
-<script>
-const lednum = 10;
-
-const delayTime = 500;
-const height = 30;
-let a = window.outerWidth
-const width = a - 30;
-//console.log(width);
-const eachwidth = width/lednum;
-const scaleBy = 3
-
-</script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+    const lednum = 28;
+    const delayTime = 500;
+    const height = 30;
+    let a = window.outerWidth
+    const width = a - 30;
+    const eachwidth = width/lednum;
+    const scaleBy = 3
+    </script>
 </head>
 
 
-<body id="body">
-<!--
-<div class="tree">
-                <label class="control-label">mode</label>
-                <btn type="button" id="pen-mode" class="btn page-link text-dark d-inline-block"><i class="fas fa-pencil-alt"></i></btn>
-                <btn type="button" id="erase-mode" class="btn page-link text-dark d-inline-block"><i class="fas fa-eraser"></i></btn>
-                <btn type="button" value="塗りつぶし" class="btn page-link text-dark d-inline-block" onclick="yamada()"><i class="fas fa-fill-drip"></i></btn>
-                <br><br>
-
-                <input type="button" id="undo" value="1つ前の状態に戻す" class="btn page-link text-dark d-inline-block">
-                <div class="sousin">
-                <input type="button" id="clear" value="すべて消す" class="btn btn-outline-danger">
-                
-                </div>
-</div>
--->
-<div id="all">
-<div class="space1"><span class="space">Hello</span></div>
-
-<div class="canvas123">  
-    <canvas class="mycanvas" id="mycanvas">残念ながらHTML5に対応していません</canvas>
-</div>
-
-<div class="container">
-    <div class="material-color-picker">
-        <ol class="color-selector" data-bind="foreach: materialColors">
-            <li class="color" >
-                <input name="material-color" type="radio" data-bind="attr: { id: 'materialColor' + $index() }, checked: selectedColor, value: color" >
-                <label class="lab" onclick='getColor(this);' data-bind="attr: { for: 'materialColor' + $index(), title: color,'id':color}, style: { 'color': $data.hex } "></label>
-            </li>
-        </ol>
+<body>
+    <div class="space1"><span class="space" style="margin:10em auto">Hello World</span></div>
+    <div class="canvas123"><canvas class="mycanvas" id="mycanvas">残念ながらHTML5に対応していません</canvas></div>
+    <div class="container">
+        <div class="material-color-picker">
+            <ol class="color-selector" data-bind="foreach: materialColors">
+                <li class="color" >
+                    <input name="material-color" type="radio" data-bind="attr: { id: 'materialColor' + $index() }, checked: selectedColor, value: color" >
+                    <label class="lab" onclick='getColor(this);' data-bind="attr: { for: 'materialColor' + $index(), title: color,'id':color}, style: { 'color': $data.hex } "></label>
+                </li>
+            </ol>
+        </div>
     </div>
-</div>
-<div id="colour">#&lt;color&gt;</div>
-
-<div class="testbutton"><button class="woo" onclick=colorinfos()>woo</button></div>
-</div>
+    <div id="colour" style="font-size: 1.5rem;margin:1.2em auto">#&lt;color&gt;</div>
+    <div class="testbutton"><button class="btn-small blue" style="width:10em" onclick=colorinfos()>console.log</button></div>
     
-
-
-<script src="javascripts/canvas.js"></script>
+    <script src="javascripts/canvas.js"></script>
 </body>
-
 </html>
