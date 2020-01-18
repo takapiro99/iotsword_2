@@ -171,9 +171,9 @@ io.on("connection",(socket)=>{
       if(two.length==1){two='00'+two;}if(two.length==2){two='0'+two;}
       if(ree.length==1){ree='00'+ree;}if(ree.length==2){ree='0'+ree;}
       let clr = one+two+ree
-      let num;
-      if(String(i).length==1){num = "0"+String(i)}else{num=String(i)}
-      client.publish("color/"+num,clr);console.log(num,clr);
+      //let num;
+      //if(String(i).length==1){num="0"+String(i)}else{num=String(i)}
+      client.publish(i,clr);console.log(num,clr);
     })
   }
   //socket.on("typing",function(data){

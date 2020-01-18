@@ -99,21 +99,15 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print(topic[6]);
     Serial.print(topic[7]);
 
-    //int *six;
-    //int six = *topic[6];
-    //Serial.println(six);
-    //new char six;
-    //char six = topic[6];
-    //new char sev;
-    //char sev = topic[7];
-    //int sixm = (topic[6]).toInt();
-    //if(six=="0"){Serial.print(six.toInt());}
-    //Serial.print(sixm);
+    
+    //leds[3].r = 105;
+    //leds[3].g = 23;
+    //int wow = (int)topic[6]+2
+    Serial.print((int)topic[6]+2);
     Serial.print(": ");
     for(int i=0;i<9;i++){
     Serial.print((char)payload[i]);
     }
-    Serial.println();
   }
 
 // color/02 000222444 
@@ -134,7 +128,7 @@ void reconnect() {
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
       // Once connected, publish an announcement...
-      client.publish("outTopic", "hello world");
+      //client.publish("outTopic", "hello world");
       // ... and resubscribe
       client.subscribe("inTopic");
       client.subscribe("color/+");
@@ -183,8 +177,8 @@ void loop() {
     lastMsg = now;
     ++value;
     snprintf (msg, 50, "hello world #%ld", value);
-    Serial.print("Publish message: ");
-    Serial.println(msg);
-    client.publish("outTopic", msg);
+    //Serial.print("Publish message: ");
+    //Serial.println(msg);
+    //client.publish("outTopic", msg);
   }
 }
