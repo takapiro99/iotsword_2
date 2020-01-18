@@ -1,7 +1,7 @@
     
 const mycanvas = document.getElementById('mycanvas');
 const c = mycanvas.getContext("2d");
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect("http://153.126.160.230:3000");
 
 //special thanks to https://gist.github.com/gerbenvandijk/7543149
 function rgbToHex(r, g, b) {

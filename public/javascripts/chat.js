@@ -1,6 +1,6 @@
 //make conection
 
-var socket = io.connect("http://localhost:3000");
+var socket = io.connect("http://153.126.160.230:3000");
 
 // Query DOM
 var message = document.getElementById("message");

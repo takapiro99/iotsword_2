@@ -9,7 +9,7 @@ var debug = require('debug')('iotsword2:server');
 var http = require('http');
 
 var mqtt = require('mqtt');
-var client  = mqtt.connect('mqtt://153.126.160.230');
+var client  = mqtt.connect('localhost');
 
 
 /** 
