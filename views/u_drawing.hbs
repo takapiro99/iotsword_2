@@ -49,7 +49,7 @@
           <input type="text" placeholder="let's chat" id="texts"></div>
         <div id="subm" class="item2" style="-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;cursor:pointer;"><i id="submits"class="medium material-icons text-lighten-2 teal-text"style="  -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;transition: all 300ms 0s ease;color:#e0f2f1;transform:scale(0.8,0.8) translate(10px,10px);">send</i></div>
     </div>
-    <div id="wow"class="container teal-text text-lighten-2 inin2" style="-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;">we can see texts</div>
+    <div id="wow"class="container teal-text text-lighten-2 inin2" style="-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;height:10em;overflow:scroll;"><br>chat log here...</div>
   </div>
 
 
@@ -62,6 +62,7 @@
   const set = document.getElementById("subm");
   set.addEventListener("click",()=>{
   socket.emit("chat",message.value);
+  message.innerHTML=""
   console.log("onclicked");
   },false);
   socket.on("chat",function(data){
