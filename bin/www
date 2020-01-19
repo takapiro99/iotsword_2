@@ -169,13 +169,13 @@ io.on("connection",(socket)=>{
           case '#ededed':console.log('white');clr = "255255255";break;
           case '#f06292':console.log('pink');clr = "255050255";break;
           case '#ef5350':console.log('red');clr = "255010010";break;
-          case '#ffa726':console.log('orange');clr = "255070000";break;
+          case '#ffa726':console.log('orange');clr = "255010050";break;
           case '#ffeb3b':console.log('yellow');clr = "255255000";break;
           case '#dce775':console.log('lightgreen');clr = "127255010";break;
           case '#66bb6a':console.log('green');clr = "010255010";break;
-          case '#80d6ff':console.log('lightblue');clr = "000200255";break;
+          case '#80d6ff':console.log('lightblue');clr = "080200255";break;
           case '#2196f3':console.log('blue');clr = "000000255";break;
-          case '#ab47bc':console.log('purple');clr = "128000128";break;
+          case '#ab47bc':console.log('purple');clr = "060000060";break;
           case '#000000':console.log('black');clr = "000000000";break;
           default:clr="000000000"
       }
