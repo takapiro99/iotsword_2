@@ -2,6 +2,7 @@
 const mycanvas = document.getElementById('mycanvas');
 const c = mycanvas.getContext("2d");
 const socket = io.connect("http://153.126.160.230:3000");
+//const socket = io.connect("http://localhost:3000");
 
 //special thanks to https://gist.github.com/gerbenvandijk/7543149
 function rgbToHex(r, g, b) {
@@ -37,23 +38,6 @@ function fill(i,color,local){
   c.fill();
 }
 
-/*
-// fill[<where>](color);
-const fill = []
-for (let i=0; i< lednum; i++){
-  fill[i]=function(color,local){
-    let xx = eachwidth/2;
-    let data = c.getImageData(eachwidth*i*scaleBy+xx, height/2, 1, 1).data; 
-    hex = "#" + ("000000" + rgbToHex(data[0], data[1], data[2])).slice(-6); //current hex color on canvas
-    //console.log(hex, color)
-    if(hex!=color && local==true){emit(i,color);}
-
-    c.fillStyle=color;
-    c.fillRect(i*eachwidth+0.4,0.5,eachwidth-1,height-1.5);
-    c.fill();
-  }
-}
-*/
 function init() {
   
   mycanvas.width = width * scaleBy;

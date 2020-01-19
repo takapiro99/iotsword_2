@@ -164,16 +164,31 @@ io.on("connection",(socket)=>{
       console.log(i, color); 
       info[i]=color;
       dim(i,color,500);
-      let one = String(hex2rgb(color)[0])
-      let two = String(hex2rgb(color)[1])
-      let ree = String(hex2rgb(color)[2])
-      if(one.length==1){one='00'+one;}if(one.length==2){one='0'+one;}
-      if(two.length==1){two='00'+two;}if(two.length==2){two='0'+two;}
-      if(ree.length==1){ree='00'+ree;}if(ree.length==2){ree='0'+ree;}
-      let clr = one+two+ree
+      let clr;
+      switch(color) {
+          case '#ededed':console.log('white');clr = "255255255";break;
+          case '#f06292':console.log('pink');clr = "255050255";break;
+          case '#ef5350':console.log('red');clr = "255010010";break;
+          case '#ffa726':console.log('orange');clr = "255070000";break;
+          case '#ffeb3b':console.log('yellow');clr = "255255000";break;
+          case '#dce775':console.log('lightgreen');clr = "127255010";break;
+          case '#66bb6a':console.log('green');clr = "010255010";break;
+          case '#80d6ff':console.log('lightblue');clr = "000200255";break;
+          case '#2196f3':console.log('blue');clr = "000000255";break;
+          case '#ab47bc':console.log('purple');clr = "128000128";break;
+          case '#000000':console.log('black');clr = "000000000";break;
+          default:clr="000000000"
+      }
+      //let one = String(hex2rgb(color)[0])
+      //let two = String(hex2rgb(color)[1])
+      //let ree = String(hex2rgb(color)[2])
+      //if(one.length==1){one='00'+one;}if(one.length==2){one='0'+one;}
+      //if(two.length==1){two='00'+two;}if(two.length==2){two='0'+two;}
+      //if(ree.length==1){ree='00'+ree;}if(ree.length==2){ree='0'+ree;}
+      //let clr = one+two+ree
       //let num;
       //if(String(i).length==1){num="0"+String(i)}else{num=String(i)}
-      client.publish(i,clr);console.log(num,clr);
+      client.publish("color/"+String(i),clr);//console.log(i,clr);
     })
   }
   //socket.on("typing",function(data){
