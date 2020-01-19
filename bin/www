@@ -11,7 +11,7 @@ var http = require('http');
 var mqtt = require('mqtt');
 var client  = mqtt.connect('mqtt://localhost');
 
-
+var count = 0;
 /** 
  * Get port from environment and store in Express.
  */
@@ -153,10 +153,17 @@ for(let i=0;i<lednum;i++){
 // when socket.io starts, below
 io.on("connection",(socket)=>{
   console.log("made socket connection",socket.id);
+  count++;
+  io.sockets.emit("count",count);
   // on "chat", emits data and console log it.
   socket.on("chat",(data)=>{
       io.sockets.emit("chat",data);
       console.log(data);
+  });
+  socket.on('disconnect', function() {
+    console.log("client disconnected!!");
+    count--;
+    io.sockets.emit("count",count);
   });
   // for each cells listens to "<int>" and braodcast the data.
   for(let i=0;i<lednum;i++){
@@ -179,14 +186,6 @@ io.on("connection",(socket)=>{
           case '#000000':console.log('black');clr = "000000000";break;
           default:clr="000000000"
       }
-      //let one = String(hex2rgb(color)[0])
-      //let two = String(hex2rgb(color)[1])
-      //let ree = String(hex2rgb(color)[2])
-      //if(one.length==1){one='00'+one;}if(one.length==2){one='0'+one;}
-      //if(two.length==1){two='00'+two;}if(two.length==2){two='0'+two;}
-      //if(ree.length==1){ree='00'+ree;}if(ree.length==2){ree='0'+ree;}
-      //let clr = one+two+ree
-      //let num;
       if(String(i).length==1){num="0"+String(i)}else{num=String(i)}
       client.publish("color/"+num,clr);//console.log(i,clr);
     })
@@ -195,6 +194,10 @@ io.on("connection",(socket)=>{
   //    socket.broadcast.emit("typing",data)
   //})
 }); 
+
+
+
+
 
 client.on('connect', function () {
   client.subscribe('presence',(err)=>{if (!err) {client.publish('presence', 'Hello mqtt')}});

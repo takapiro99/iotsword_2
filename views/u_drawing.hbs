@@ -28,7 +28,7 @@
 
 <body>
     <div class="space1"><span class="space" style="margin:2em auto;text-align:center;">Hello LT会!</span></div>
-    <div class="container grey-text big-text"><span>3</span> 人がオンライン</div>
+    <div class="container grey-text big-text"><span id="count">3</span> 人がオンライン</div>
     <div class="canvas123"><canvas class="mycanvas" id="mycanvas">残念ながらHTML5に対応していません</canvas></div>
     <div class="container">
         <div class="material-color-picker">
@@ -46,19 +46,40 @@
 
     <div class="container"style="display:flex;">
         <div class="item1"style="flex-grow:3;margin:1em 0 0 0;"><input type="text" placeholder="let's chat" id="texts"></div>
-        <div id="subm" class="item2" style="cursor:pointer;"><i id="submits"class="medium material-icons text-lighten-2 teal-text"style="transition: all 300ms 0s ease;color:#e0f2f1;transform:scale(0.8,0.8) translate(10px,10px);">send</i></div>
+        <div id="subm" class="item2" style="cursor:pointer;"><i id="submits"class="medium material-icons text-lighten-2 teal-text"style="  -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;transition: all 300ms 0s ease;color:#e0f2f1;transform:scale(0.8,0.8) translate(10px,10px);">send</i></div>
     </div>
-    <div class="container teal-text text-lighten-2 inin2">we can see texts</div>
+    <div id="wow"class="container teal-text text-lighten-2 inin2">we can see texts</div>
   </div>
+
+
+
 
 <script src="javascripts/canvas.js"></script>
 <script>
-  set = document.getElementById("subm");
+  const output = document.getElementById("wow");
+  const set = document.getElementById("subm");
   set.addEventListener("click",()=>{
-    console.log("onclicked");
+  socket.emit("chat",message.value);
+  console.log("onclicked");
   },false);
+  socket.on("chat",function(data){
+    output.innerHTML = "</br>"+data+output.innerHTML;
+  });
 </script>
 
-    
+<script>
+jQuery(function(){
+  var socket = io.connect('http://localhost');
+  // 接続時の動作
+  socket.on('count', function (data) {
+      jQuery('#count').html(data);
+  });
+  // 切断時の動作
+  socket.on('count', function (data) {
+      jQuery('#count').html(data);
+  });
+});
+</script>  
+
 </body>
 </html>
