@@ -188,7 +188,7 @@ io.on("connection",(socket)=>{
       //let clr = one+two+ree
       //let num;
       //if(String(i).length==1){num="0"+String(i)}else{num=String(i)}
-      client.publish("color/"+String(i),clr);//console.log(i,clr);
+      client.publish("color/"+i,clr);//console.log(i,clr);
     })
   }
   //socket.on("typing",function(data){
