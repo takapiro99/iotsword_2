@@ -166,3 +166,17 @@ html {
       font-size: 3rem;
       vertical-align: middle;
   }
+
+  .inin{
+    border-radius: 0.5em 0.5em 0 0; 
+    
+  }
+
+  .inin2{
+    border-radius: 0 0 0.5em 0.5em;
+   
+  }
+
+  .icic{
+    display: inline;
+  }

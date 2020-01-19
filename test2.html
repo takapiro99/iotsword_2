@@ -5,15 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="stylesheets/canvas.css">
-    <script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>-->
     <script>
     const lednum = 28;
     const delayTime = 500;
@@ -42,23 +37,29 @@
     </div>
     <div id="colour" style="font-size: 1.5rem;margin:1.2em auto">#&lt;color&gt;</div>
 
-  <div class="cont" style="border: 1px solid rgb(198, 226, 226);border-radius:1em;">
+    <div class="container">
 
-    <div class="container"style="display:flex;">
-        <div class="item1"style="flex-grow:3;margin:1em 0 0 0;"><input type="text" placeholder="let's chat" id="texts"></div>
-        <div id="subm" class="item2" style="cursor:pointer;"><i id="submits"class="medium material-icons text-lighten-2 teal-text"style="transition: all 300ms 0s ease;color:#e0f2f1;transform:scale(0.8,0.8) translate(10px,10px);">send</i></div>
+        <div class="row">
+        <div class="col s3"><input type="text" placeholder="let's chat"></div>
+        <div class="col s9 ">あ</div>
+        </div>
+
     </div>
-    <div class="container teal-text text-lighten-2 inin2">we can see texts</div>
-  </div>
+    <div class="container">
+        <div class="row">
 
-<script src="javascripts/canvas.js"></script>
-<script>
-  set = document.getElementById("subm");
-  set.addEventListener("click",()=>{
-    console.log("onclicked");
-  },false);
-</script>
+      <div class="grey col s1">
+         Grey navigation panel -->
+      </div>
 
-    
+      <div class="teal col s8">
+         Teal page content  -->
+      </div>
+
+    </div>
+    </div><button class="background-color:transparent;border:none;cursor:pointer;outline:none;padding:0;appearance:none;">ぴえん</button>
+
+    <div class="container teal lighten-5 white-text inin2">we can see texts</div>
+    <script src="javascripts/canvas.js"></script>
 </body>
 </html>

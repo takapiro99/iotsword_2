@@ -70,22 +70,11 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
-
-
-void Palette1(){
-  CRGB blue  = CHSV( HUE_BLUE, 255, 255);
-  CRGB black  = CRGB::Black;
-  currentPalette = CRGBPalette16(
-                                 black, black, black, 0xff00ff,
-                                 blue,  black, black, black,
-                                 black, black, black, black,
-                                 black, black, black, black );
-}
 void ledsetup() {
     delay( 2000 ); // power-up safety delay
     FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
     FastLED.setBrightness( BRIGHTNESS );
-    Palette1();
+    //Palette1();
     currentBlending = LINEARBLEND;
 }
 
@@ -96,25 +85,25 @@ void callback(char* topic, byte* payload, unsigned int length) {
   //Serial.print("%d", topic - '0'); // 1
 
   if((char)topic[0]=='c'){
-    Serial.print(topic[6]);
-    Serial.print(topic[7]);
-
-    
+    //Serial.print(topic[6]);
+    //Serial.print(topic[7]);
+    int num = ((int)topic[6]-48)*10 + (int)topic[7]-48;
+    Serial.print(num);
+    Serial.print(": ");
     //leds[3].r = 105;
     //leds[3].g = 23;
     //int wow = (int)topic[6]+2
-    Serial.print((int)topic[6]);
-    Serial.print(": ");
-    for(int i=0;i<9;i++){
-    Serial.print((char)payload[i]);
-    }
-  }
-
-// color/02 000222444 
-  
-  Serial.print("] ");
+    //Serial.print((int)topic[6]);
+    //Serial.print(": ");
+    int r = ((int)payload[0]-48)*100 + ((int)payload[1]-48)*10 + (int)payload[2]-48;
+    int g = ((int)payload[3]-48)*100 + ((int)payload[4]-48)*10 + (int)payload[5]-48;
+    int b = ((int)payload[6]-48)*100 + ((int)payload[7]-48)*10 + (int)payload[8]-48;
+    Serial.print(r);Serial.print(",");Serial.print(g);Serial.print(",");Serial.print(b);
+      Serial.print("] ");
   Serial.println();
-  
+  leds[num].r=r;leds[num].g=g;leds[num].b=b;
+   FastLED.show();
+    }  
 }
 
 void reconnect() {
@@ -152,33 +141,12 @@ void setup() {
   client.setCallback(callback);
   ledsetup();
 }
-void FillLEDsFromPaletteColors(uint8_t colorIndex)
-{
-    uint8_t brightness = 255;
-    for( int i = 28; i>=0; i--) {
-        leds[i] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-        colorIndex += 3;
-    }
-}
+
 
 void loop() {
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
-  static uint8_t startIndex = 0;
-  startIndex = startIndex + 1; /* motion speed */
-  FillLEDsFromPaletteColors(startIndex);
-  FastLED.show();
-  FastLED.delay(1000 / UPDATES_PER_SECOND);
-  
-  long now = millis();
-  if (now - lastMsg > 2000) {
-    lastMsg = now;
-    ++value;
-    snprintf (msg, 50, "hello world #%ld", value);
-    //Serial.print("Publish message: ");
-    //Serial.println(msg);
-    //client.publish("outTopic", msg);
-  }
+
 }
