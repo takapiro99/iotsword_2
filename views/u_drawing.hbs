@@ -45,10 +45,11 @@
   <div class="cont" style="border: 1px solid rgb(198, 226, 226);border-radius:1em;">
 
     <div class="container"style="display:flex;">
-        <div class="item1"style="flex-grow:3;margin:1em 0 0 0;"><input type="text" placeholder="let's chat" id="texts"></div>
-        <div id="subm" class="item2" style="cursor:pointer;"><i id="submits"class="medium material-icons text-lighten-2 teal-text"style="  -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;transition: all 300ms 0s ease;color:#e0f2f1;transform:scale(0.8,0.8) translate(10px,10px);">send</i></div>
+        <div class="item1"style="flex-grow:3;margin:1em 0 0 0;">
+          <input type="text" placeholder="let's chat" id="texts"></div>
+        <div id="subm" class="item2" style="-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;cursor:pointer;"><i id="submits"class="medium material-icons text-lighten-2 teal-text"style="  -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;transition: all 300ms 0s ease;color:#e0f2f1;transform:scale(0.8,0.8) translate(10px,10px);">send</i></div>
     </div>
-    <div id="wow"class="container teal-text text-lighten-2 inin2">we can see texts</div>
+    <div id="wow"class="container teal-text text-lighten-2 inin2" style="-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;">we can see texts</div>
   </div>
 
 
@@ -56,6 +57,7 @@
 
 <script src="javascripts/canvas.js"></script>
 <script>
+  const message = document.getElementById("texts");
   const output = document.getElementById("wow");
   const set = document.getElementById("subm");
   set.addEventListener("click",()=>{
