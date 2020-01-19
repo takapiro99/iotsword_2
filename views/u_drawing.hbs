@@ -57,31 +57,26 @@
 
 <script src="javascripts/canvas.js"></script>
 <script>
+  const count = document.getElementById("count");
   const message = document.getElementById("texts");
   const output = document.getElementById("wow");
   const set = document.getElementById("subm");
   set.addEventListener("click",()=>{
   socket.emit("chat",message.value);
-  message.innerHTML=""
+  message.value="";
   console.log("onclicked");
   },false);
   socket.on("chat",function(data){
     output.innerHTML = "</br>"+data+output.innerHTML;
   });
+
+  socket.on('count', function (data) {
+      count.innerText=data;
+  });
 </script>
 
 <script>
-jQuery(function(){
-  var socket = io.connect('http://localhost');
-  // 接続時の動作
-  socket.on('count', function (data) {
-      jQuery('#count').html(data);
-  });
-  // 切断時の動作
-  socket.on('count', function (data) {
-      jQuery('#count').html(data);
-  });
-});
+
 </script>  
 
 </body>
