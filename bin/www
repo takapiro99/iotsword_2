@@ -175,7 +175,7 @@ io.on("connection",(socket)=>{
           case '#66bb6a':console.log('green');clr = "010255010";break;
           case '#80d6ff':console.log('lightblue');clr = "050200255";break;
           case '#2196f3':console.log('blue');clr = "000000255";break;
-          case '#ab47bc':console.log('purple');clr = "020000040";break;
+          case '#ab47bc':console.log('purple');clr = "045000100";break;
           case '#000000':console.log('black');clr = "000000000";break;
           default:clr="000000000"
       }
