@@ -96,8 +96,8 @@ function onListening() {
 var io = require('socket.io')(server);
 //module.exports = io;
 /**
- * ADDED!! Socket.IO Connection.
- */
+ * Socket.IO Connection.
+*/
 
 function hex2rgb ( hex ) {
 	if ( hex.slice(0, 1) == "#" ) hex = hex.slice(1) ;
@@ -115,17 +115,6 @@ function componentToHex(c) {
 function rgb2hex(r, g, b) {
   return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
-
-/*
-function rgb2hex ( rgb ) {
-	return "#" + rgb.map( function ( value ) {
-		return ( "0" + value.toString( 16 ) ).slice( -2 ) ;
-	} ).join( "" ) ;
-}
-//rgb2hex( [ 255, 128, 64 ] ) ;	// #ff8040
-*/
-//dim[0]("#ee0012");
-//ってやったら自動で0番のdimが始まる。他のやつが来たり0になったらbreakしなければならない。
 
 function emitting(i,color){
   io.sockets.emit(i,color);
@@ -146,6 +135,7 @@ info = []
 for(let i=0;i<lednum;i++){
   info[i]="#000000";
 }
+
 /*-----------------------------
             main 
  
@@ -187,17 +177,13 @@ io.on("connection",(socket)=>{
           default:clr="000000000"
       }
       if(String(i).length==1){num="0"+String(i)}else{num=String(i)}
-      client.publish("color/"+num,clr);//console.log(i,clr);
+      client.publish("color/"+num,clr);
     })
   }
   //socket.on("typing",function(data){
   //    socket.broadcast.emit("typing",data)
   //})
 }); 
-
-
-
-
 
 client.on('connect', function () {
   client.subscribe('presence',(err)=>{if (!err) {client.publish('presence', 'Hello mqtt')}});

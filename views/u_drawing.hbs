@@ -1,57 +1,54 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="stylesheets/canvas.css">
-    <script
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="stylesheets/canvas.css">
+  <script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   crossorigin="anonymous"></script>
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script>
-    const lednum = 28;
-    const delayTime = 500;
-    const height = 30;
-    let a = window.outerWidth
-    const width = a - 30;
-    const eachwidth = width/lednum;
-    const scaleBy = 3;
-    </script>
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script>
+  const lednum = 28;
+  const delayTime = 500;
+  const height = 30;
+  let a = window.outerWidth
+  const width = a - 30;
+  const eachwidth = width/lednum;
+  const scaleBy = 3;
+  </script>
 </head>
 
 
 <body>
-    <div class="space1"><span class="space" style="margin:2em auto;text-align:center;">Hello LT会!</span></div>
-    <div class="container grey-text big-text"><span id="count">3</span> 人がオンライン</div>
-    <div class="canvas123"><canvas class="mycanvas" id="mycanvas">残念ながらHTML5に対応していません</canvas></div>
-    <div class="container">
-        <div class="material-color-picker">
-            <ol class="color-selector" data-bind="foreach: materialColors">
-                <li class="color" >
-                    <input name="material-color" type="radio" data-bind="attr: { id: 'materialColor' + $index() }, checked: selectedColor, value: color" >
-                    <label class="lab" onclick='getColor(this);' data-bind="attr: { for: 'materialColor' + $index(), title: color,'id':color}, style: { 'color': $data.hex } "></label>
-                </li>
-            </ol>
-        </div>
+  <div class="space1"><span class="space" style="margin:2em auto;text-align:center;">Hello LT会!</span></div>
+  <div class="container grey-text big-text"><span id="count">3</span> 人がオンライン</div>
+  <div class="canvas123"><canvas class="mycanvas" id="mycanvas">残念ながらHTML5に対応していません</canvas></div>
+  <div class="container">
+    <div class="material-color-picker">
+      <ol class="color-selector" data-bind="foreach: materialColors">
+        <li class="color" >
+          <input name="material-color" type="radio" data-bind="attr: { id: 'materialColor' + $index() }, checked: selectedColor, value: color" >
+          <label class="lab" onclick='getColor(this);' data-bind="attr: {for:'materialColor'+$index(), title: color, 'id':color}, style:{'color':$data.hex} "></label>
+        </li>
+      </ol>
     </div>
-    <div id="colour" style="font-size: 1.5rem;margin:1.2em auto">#&lt;color&gt;</div>
-
+  </div>
+  <div id="colour" style="font-size: 1.5rem;margin:1.2em auto">#&lt;color&gt;</div>
   <div class="cont" style="border: 1px solid rgb(198, 226, 226);border-radius:1em;">
-
     <div class="container"style="display:flex;">
-        <div class="item1"style="flex-grow:3;margin:1em 0 0 0;">
-          <input type="text" placeholder="let's chat" id="texts"></div>
-        <div id="subm" class="item2" style="-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;cursor:pointer;"><i id="submits"class="medium material-icons text-lighten-2 teal-text"style="  -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;transition: all 300ms 0s ease;color:#e0f2f1;transform:scale(0.8,0.8) translate(10px,10px);">send</i></div>
+      <div class="item1"style="flex-grow:3;margin:1em 0 0 0;">
+        <input type="text" placeholder="let's chat" id="texts"></div>
+      <div id="subm" class="item2" style="-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;cursor:pointer;"><i id="submits"class="medium material-icons text-lighten-2 teal-text"style="  -moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;transition: all 300ms 0s ease;color:#e0f2f1;transform:scale(0.8,0.8) translate(10px,10px);">send</i></div>
     </div>
     <div id="wow"class="container teal-text text-lighten-2 inin2" style="-moz-user-select: none;-webkit-user-select: none;-ms-user-select: none;height:10em;overflow:scroll;"><br>chat log here...</div>
   </div>
-
 
 <div style="margin:500px auto;"></div>
 

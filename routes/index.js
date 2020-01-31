@@ -16,7 +16,6 @@ router.get('/me', function(req, res, next) {
 });
 
 router.get('/json', function(req, res, next) {
-  //console.log(info)
   console.log("json");
   res.json({
     0:info[0],
