@@ -15,7 +15,7 @@
     "mqtt": "^3.0.0",
     "path": "^0.12.7",
     "serve-favicon": "^2.5.0",
-    "socket.io": "^2.4.0",
+    "socket.io": "^2.5.0",
     "socket.io-mqtt": "^0.1.0"
   }
 }
